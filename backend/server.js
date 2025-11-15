@@ -43,23 +43,51 @@ app.get("/stats", (req, res) => {
               console.log(err);
               return res.status(500).json({ error: err.message });
             }
-           
+
             res.json({
-                total_placements:statResult[0].total_placements,
-                selected:statResult[0].selected,
-                applied:statResult[0].applied,
-                interview:statResult[0].interview,
-                rejected:statResult[0].rejected,
-                total_companies:companiResult[0].totalCompanies,
-                total_students:studentResult[0].totalStudents 
-            })
-            
+              total_placements: statResult[0].total_placements,
+              selected: statResult[0].selected,
+              applied: statResult[0].applied,
+              interview: statResult[0].interview,
+              rejected: statResult[0].rejected,
+              total_companies: companiResult[0].totalCompanies,
+              total_students: studentResult[0].totalStudents,
+            });
           }
         );
       }
     );
   });
 });
+
+app.get("/students", (req, res) => {
+  const query = `select * from students order by created_at desc`;
+  db.query(query, (err, result) => {
+    if (err){ return res.status(500).json({ error: err.message });}
+   console.log(result) 
+  
+  res.json(result)  ;
+    
+  });
+});
+
+app.delete('/students/:id',(req,res)=>{
+  const stdid = req.params.id;
+const query = 'DELETE FROM students WHERE id = ?';
+ console.log(stdid)
+  db.query(query,[stdid],(err,result)=>{
+    if(err){
+       console.log(err.message);
+      return res.status(500).json({error : err.message});
+    }
+    if(result.affectedRows === 0){
+       console.log('err2');
+      return res.status(404).json({ message:'No student Found'});
+    }
+    res.json({status:'succuss', message:'deleted successfully'});
+  })
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
