@@ -7,8 +7,9 @@ async function loadStudent() {
     const students = await response.json();
 
     if (tbody && students.length > 0) {
-      tbody.innerHTML = students.map(
-        (student) => `
+      tbody.innerHTML = students
+        .map(
+          (student) => `
             <tr>
                   <td>${student.student_id}</td>
                   <td>${student.name}</td>
@@ -22,14 +23,17 @@ async function loadStudent() {
                          <i class='fas fa-eye me-1'>
                          </i>
                      </a>
-                    <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${student.id }, '${student.name}')">
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteStudent(${
+                      student.id
+                    }, '${student.name}')">
                             <i class="fas fa-trash me-1"></i>Delete
                         </button>
                   </td>
                   
             </tr>
             `
-      ).join('');
+        )
+        .join("");
     } else {
       nostudent.style.display = "block";
     }
@@ -38,27 +42,24 @@ async function loadStudent() {
   }
 }
 
+async function deleteStudent(id, name) {
+  if (confirm(`Do yo want to delete ${name}`)) {
+    try {
+      const response = await fetch(`/students/${id}`, {
+        method: "delete",
+      });
+      const res = await response.json();
 
-async function deleteStudent(id,name){
-       if(confirm(`Do yo want to delete ${name}`)){
-          try{
-            const response = await fetch(`/students/${id}`,{
-                method:'delete'
-            });
-            const res = await response.json();
-            
-            if(res.status === 'succuss'){
-                alert(`${name} deleted `);
-                loadStudent();
-            }
-            else{
-                throw new Error(res.message ||'failed to delete')
-            }
-          }
-          catch(err){
-            alert(err.message)
-          }
-       }
+      if (res.status === "succuss") {
+        alert(`${name} deleted `);
+        loadStudent();
+      } else {
+        throw new Error(res.message || "failed to delete");
+      }
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 }
 
-document.addEventListener('DOMContentLoaded',loadStudent);
+document.addEventListener("DOMContentLoaded", loadStudent);
