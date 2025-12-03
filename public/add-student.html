@@ -71,7 +71,7 @@
           <h5 class="card-title mb-0">Student Information</h5>
         </div>
         <div class="card-body">
-          <form id="add-student-form">
+          <form id="add-student-form" method="post" >
             <div class="row">
               <div class="col-md-4 mb-3">
                 <label for="student-id" class="form-label">Student Id*</label>
@@ -149,7 +149,7 @@
               <div class="col-md-8 mb-3">
                 <input
                   type="number"
-                  id="student-dcgpa"
+                  id="student-cgpa"
                   name="student-cgpa"
                   class="form-control"
                 />
@@ -178,13 +178,13 @@
           >
             Cancel
           </button>
-          <button type="submit" form="add-student-form" class="btn btn-success">
+          <button type="submit" form="add-student-form" class="btn btn-success" onclick="addStudent(event)">
             <i class="fas fa-save me-2"></i> Save Student
           </button>
         </div>
       </div>
     </div>
-    <script src="add-student.js"></script>
+    <script src="js/add-student.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
